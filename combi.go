@@ -21,7 +21,7 @@ func broadcast_ip(id int) {
 	}
 	defer c.Close()
 
-	dst, err := net.ResolveUDPAddr("udp", "255.255.255.255:8032")
+	dst, err := net.ResolveUDPAddr("udp", "255.255.255.255:20014")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func broadcast_ip(id int) {
 }
 
 func listenUDP() {
-	c, err := net.ListenPacket("udp", ":8032")
+	c, err := net.ListenPacket("udp", ":20014")
 	if err != nil {
 		log.Fatal(err)
 	}
