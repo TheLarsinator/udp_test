@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"flag"
 	"fmt"
 	"log"
@@ -25,8 +26,11 @@ func broadcast_ip(id int) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	b := make([]byte, 4)
+	binary.BigEndian.PutUint32(b, uint32(id))
 	for {
-		if _, err := c.WriteTo([]byte(string(id)), dst); err != nil {
+		if _, err := c.WriteTo(b, dst); err != nil {
 			log.Fatal(err)
 		}
 		time.Sleep(1000 * time.Millisecond)
@@ -40,12 +44,13 @@ func listenUDP() {
 	}
 	defer c.Close()
 	for {
-		b := make([]byte, 512)
+		b := make([]byte, 4)
 		n, peer, err := c.ReadFrom(b)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println(n, "bytes read from", peer, "saying", b[0])
+		value := int32(binary.BigEndian.Uint32(b))
+		log.Println(n, "bytes read from", peer, "saying", value)
 		//TODO: Send the peer addr and data to our handler, and register the elevator
 	}
 }
