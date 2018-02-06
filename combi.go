@@ -33,7 +33,6 @@ func broadcast_ip(id int) {
 		if _, err := c.WriteTo(b, dst); err != nil {
 			log.Fatal(err)
 		}
-		time.Sleep(1000 * time.Millisecond)
 	}
 }
 
